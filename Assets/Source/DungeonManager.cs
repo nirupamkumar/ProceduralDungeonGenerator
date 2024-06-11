@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class DungeonManager : MonoBehaviour
 {
-    public GameObject floorPrefab, wallPrefab, tileSpawnerPrefab;
+    public GameObject floorPrefab, wallPrefab, tileSpawnerPrefab, exitDoorPrefab;
     public int totalFloorCount;
 
     [HideInInspector] public float minX, maxX, minY, maxY;
@@ -19,7 +19,7 @@ public class DungeonManager : MonoBehaviour
 
     private void Update()
     {
-        // Optional to Test inEditor
+        // Optional to Test Dungeon Generation inEditor
         if (Application.isEditor && Input.GetKeyDown(KeyCode.Space))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -64,5 +64,23 @@ public class DungeonManager : MonoBehaviour
             goTile.transform.SetParent(transform);
         }
 
+        StartCoroutine(DelayProgress());
+    }
+
+    IEnumerator DelayProgress()
+    {
+        while (FindObjectsOfType<TileSpawner>().Length > 0)
+        {
+            yield return null;
+        }
+        ExitDoor();
+    }
+
+    private void ExitDoor()
+    {
+        Vector3 doorPos = floorList[floorList.Count - 1];
+        GameObject goExitDoor = Instantiate(exitDoorPrefab, doorPos, Quaternion.identity) as GameObject;
+        goExitDoor.name = exitDoorPrefab.name;
+        goExitDoor.transform.SetParent(transform);
     }
 }
