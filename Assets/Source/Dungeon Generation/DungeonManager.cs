@@ -15,6 +15,9 @@ public class DungeonManager : MonoBehaviour
 
     private void Start()
     {
+        totalFloorCount = PlayerPrefs.GetInt("DungeonSize", 100); // Default value is 100 if not set
+        GenerateDungeon(totalFloorCount);
+
         RandomWalker();
     }
 
@@ -25,6 +28,11 @@ public class DungeonManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+    }
+
+    void GenerateDungeon(int size)
+    {
+        Debug.Log("Generating dungeon of size: " + size);
     }
 
     private void RandomWalker()
