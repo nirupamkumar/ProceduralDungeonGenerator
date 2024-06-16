@@ -7,13 +7,24 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private Button BTN_Enter;
-    [SerializeField] private Button BTN_Exit;
+    public static UIManager instance;
+    public GameObject interactPrompt;
 
-    private void Awake()
+    void Awake()
     {
-        BTN_Enter.onClick.AddListener(EnterDungeon);
-        BTN_Exit.onClick.AddListener(ExitDungeon);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public static void ShowInteractPrompt(bool show)
+    {
+        instance.interactPrompt.SetActive(show);
     }
 
     private void EnterDungeon()
